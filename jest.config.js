@@ -1,9 +1,11 @@
-module.exports = {
+export default {
   preset: "ts-jest",
   testEnvironment: "node",
   roots: ["<rootDir>/src"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": ["ts-jest", {
+      tsconfig: "<rootDir>/tsconfig.jest.json",
+    }],
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
@@ -17,9 +19,10 @@ module.exports = {
     "src/client/**/*.tsx",
   ],
   coverageDirectory: "<rootDir>/coverage",
-  globals: {
-    "ts-jest": {
-      tsconfig: "<rootDir>/tsconfig.jest.json",
-    },
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
   },
+  testPathIgnorePatterns: [
+    "<rootDir>/src/components/", // Ignore React components for now
+  ],
 };

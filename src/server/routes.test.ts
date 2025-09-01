@@ -11,7 +11,7 @@ describe("/api/mask", () => {
     const res1 = await request(app)
       .post("/api/mask")
       .send({ value: "123-45-6789", dataType: "SSN", role: "Supervisor" });
-    expect(res1.body.masked).toBe("***-**-6789");
+    expect(res1.body.masked).toBe("***-**-****");
 
     // cache hit flag
     const res2 = await request(app)

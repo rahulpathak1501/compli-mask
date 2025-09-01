@@ -1,5 +1,5 @@
 import { getMaskLevelFromPolicy, getRisk } from "./policyLoader";
-import { applyMaskByLevel, ssnMask, phoneMask, emailMask } from "./operators";
+import { applyMaskByLevel, ssnMask, phoneMask } from "./operators";
 import type {
   MaskLevel,
   RiskLevel,
@@ -10,7 +10,6 @@ import type {
 
 function capByRisk(level: MaskLevel, risk: RiskLevel): MaskLevel {
   if (risk === "HIGH") {
-    const allowed = ["MASK_ALL", "PARTIAL_LAST4", "PARTIAL_LAST3", "NONE"];
     if (level === "FULL") return "PARTIAL_LAST4";
     return level;
   }
@@ -70,13 +69,6 @@ export function decideMask(
 
   if (aiSuggestLevel) {
     const clamped = capByRisk(aiSuggestLevel, risk);
-    const order = [
-      "MASK_ALL",
-      "PARTIAL_LAST3",
-      "PARTIAL_LAST4",
-      "NONE",
-      "FULL",
-    ];
     const permissivenessRank: Record<MaskLevel, number> = {
       MASK_ALL: 0,
       PARTIAL_LAST3: 1,

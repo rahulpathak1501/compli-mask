@@ -4,15 +4,12 @@ import {
   loadPolicySync,
   getMaskLevelFromPolicy,
 } from "../../shared/policyLoader";
-import { makeCacheKey } from "../cache";
-import { decideMask } from "../../shared/engine";
-import { ssnMask } from "../../shared/operators";
 
 const router = express.Router();
 
 router.post("/unmask", async (req, res) => {
   try {
-    const { recordId, field, role, purpose } = req.body as {
+    const { recordId, field, role } = req.body as {
       recordId: string;
       field: string;
       role: string;
@@ -31,8 +28,6 @@ router.post("/unmask", async (req, res) => {
     // HIGH risk: only Administrator with step-up token allowed full reveal (example)
     if (risk === "HIGH" && role !== "Administrator") {
       // deny full unmask: return PARTIAL_LAST4
-      const decision = decideMask("REDACTED", role, field); // we only need level
-      // produce a safe reveal (simulate partial reveal)
       // In real world: query DB for recordId, return only partial masked content
       return res.status(403).json({
         allowed: false,
