@@ -1,5 +1,5 @@
 TN:
-SF:src\server\ai.ts
+SF:src/server/ai.ts
 FN:10,aiSuggestMaskLevel
 FN:29,(anonymous_1)
 FN:30,(anonymous_2)
@@ -48,7 +48,7 @@ BRF:10
 BRH:1
 end_of_record
 TN:
-SF:src\server\cache.ts
+SF:src/server/cache.ts
 FN:7,makeCacheKey
 FN:15,cacheGet
 FN:18,cacheSet
@@ -79,7 +79,7 @@ BRF:3
 BRH:2
 end_of_record
 TN:
-SF:src\server\index.ts
+SF:src/server/index.ts
 FN:6,createApp
 FN:14,(anonymous_2)
 FN:25,(anonymous_3)
@@ -116,7 +116,7 @@ BRF:4
 BRH:1
 end_of_record
 TN:
-SF:src\server\routes\mask.ts
+SF:src/server/routes/mask.ts
 FN:8,(anonymous_1)
 FNF:1
 FNH:1
@@ -152,7 +152,7 @@ BRF:4
 BRH:3
 end_of_record
 TN:
-SF:src\server\routes\unmask.ts
+SF:src/server/routes/unmask.ts
 FN:13,(anonymous_1)
 FNF:1
 FNH:1
