@@ -1,5 +1,6 @@
 import { getMaskLevelFromPolicy, getRisk } from "./policyLoader";
 import { applyMaskByLevel, ssnMask, phoneMask } from "./operators";
+import { getPatternByLevel, type MaskContext } from "./maskPatterns";
 import type {
   MaskLevel,
   RiskLevel,
@@ -17,8 +18,20 @@ function capByRisk(level: MaskLevel, risk: RiskLevel): MaskLevel {
   return level;
 }
 
-function maskValueByLevel(level: MaskLevel, dataType: DataType, value: string) {
-  // special-case formats
+function maskValueByLevel(level: MaskLevel, dataType: DataType, value: string, role?: string) {
+  const context: MaskContext = {
+    dataType,
+    role: role || "unknown",
+    metadata: {}
+  };
+
+  // Try to use the new pattern system first
+  const pattern = getPatternByLevel(level);
+  if (pattern) {
+    return pattern.apply(value, context);
+  }
+
+  // Fallback to legacy masking logic for backward compatibility
   if (dataType === "SSN") {
     if (level === "FULL" || level === "NONE") return value;
     if (level === "MASK_ALL") return value.replace(/\d/g, "*");
@@ -88,6 +101,6 @@ export function decideMask(
     reason = `Policy ${baseLevel} clamped by risk ${risk} => ${chosen}`;
   }
 
-  const masked = maskValueByLevel(chosen, dataType, value);
+  const masked = maskValueByLevel(chosen, dataType, value, role);
   return { masked, level: chosen, reason, source };
 }

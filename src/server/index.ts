@@ -1,6 +1,7 @@
 import express from "express";
 import maskRoute from "./routes/mask";
 import unmaskRoute from "./routes/unmask";
+import healthRoute from "./routes/health";
 import rateLimit from "express-rate-limit";
 
 export function createApp() {
@@ -10,6 +11,7 @@ export function createApp() {
 
   app.use("/api", maskRoute);
   app.use("/api", unmaskRoute);
+  app.use("/api", healthRoute);
 
   app.use((req: any, _res: any, next: any) => {
     console.info(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
