@@ -1,0 +1,47 @@
+{
+  "roles": [
+    "Administrator",
+    "Regional Manager",
+    "Manager",
+    "Supervisor",
+    "Teller"
+  ],
+  "policy": {
+    "Administrator": {
+      "SSN": "FULL",
+      "ACCOUNT_NUMBER": "FULL",
+      "PHONE": "FULL",
+      "EMAIL": "FULL"
+    },
+    "Regional Manager": {
+      "SSN": "PARTIAL_LAST4",
+      "ACCOUNT_NUMBER": "PARTIAL_LAST4",
+      "PHONE": "PARTIAL_LAST4",
+      "EMAIL": "PARTIAL_LAST3"
+    },
+    "Manager": {
+      "SSN": "PARTIAL_LAST4",
+      "ACCOUNT_NUMBER": "PARTIAL_LAST4",
+      "PHONE": "PARTIAL_LAST4",
+      "EMAIL": "PARTIAL_LAST3"
+    },
+    "Supervisor": {
+      "SSN": "MASK_ALL",
+      "ACCOUNT_NUMBER": "PARTIAL_LAST4",
+      "PHONE": "PARTIAL_LAST4",
+      "EMAIL": "PARTIAL_LAST3"
+    },
+    "Teller": {
+      "SSN": "NONE",
+      "ACCOUNT_NUMBER": "PARTIAL_LAST4",
+      "PHONE": "PARTIAL_LAST4",
+      "EMAIL": "PARTIAL_LAST3"
+    }
+  },
+  "riskByType": {
+    "SSN": "HIGH",
+    "ACCOUNT_NUMBER": "HIGH",
+    "PHONE": "MEDIUM",
+    "EMAIL": "MEDIUM"
+  }
+}

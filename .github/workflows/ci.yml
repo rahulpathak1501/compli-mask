@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Unit & integration tests
+        run: npm test
+
+      - name: Build client
+        run: npm run build
+
+      - name: Start server
+        run: |
+          npm run server &
+          SERVER_PID=$!
+          # Wait for server to be up (consider using npx wait-on if available)
+          sleep 10
+          npm test -- tests/server || npm test tests/server
+          kill $SERVER_PID || true
+
+      - name: Serve React preview
+        run: |
+          npm run preview &
+          PREVIEW_PID=$!
+          sleep 10
+          # Optionally run E2E/UI tests here
+          kill $PREVIEW_PID || true
