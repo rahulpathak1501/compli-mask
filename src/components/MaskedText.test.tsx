@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { http, HttpResponse } from "msw";
@@ -7,7 +6,7 @@ import { MaskedText } from "./MaskedText";
 import { DataElementEnum } from "../shared";
 
 const server = setupServer(
-  http.post("/api/mask", (req) => {
+  http.post("/api/mask", () => {
     return HttpResponse.json(
       {
         masked: "***-**-6789",

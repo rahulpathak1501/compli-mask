@@ -28,10 +28,15 @@ export const MaskedText: React.FC<MaskedTextProps> = ({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ value, dataType, role }),
         });
-        const data = await res.json();
+        const data = await res.json() as { 
+          masked: string; 
+          level: string; 
+          reason: string; 
+          source: "AI" | "Policy" 
+        };
         if (res.ok) {
           setMasked(data.masked);
-          setSource("AI");
+          setSource(data.source);
         } else {
           setMasked(fallbackMaskers[dataType](value));
         }

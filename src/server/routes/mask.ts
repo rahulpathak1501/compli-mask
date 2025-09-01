@@ -3,6 +3,13 @@ import { decideMask } from "../../shared/engine";
 import { aiSuggestMaskLevel } from "../ai";
 import { makeCacheKey, cacheGet, cacheSet } from "../cache";
 
+interface CachedResult {
+  masked: string;
+  level: string;
+  reason: string;
+  source: string;
+}
+
 const router = express.Router();
 
 router.post("/mask", async (req, res) => {
@@ -16,23 +23,30 @@ router.post("/mask", async (req, res) => {
       return res.status(400).json({ error: "value required" });
 
     const key = makeCacheKey(value, dataType, role);
-    const cached = cacheGet(key);
-    if (cached) return res.json({ ...cached, cached: true });
+    const cached = cacheGet(key) as CachedResult | undefined;
+    if (cached && typeof cached === 'object' && cached.masked) {
+      return res.json({ 
+        masked: cached.masked,
+        level: cached.level,
+        reason: cached.reason,
+        source: cached.source,
+        cached: true 
+      });
+    }
 
     // try AI suggestion (best-effort)
     const aiLevel = await aiSuggestMaskLevel(value, dataType, role);
     const result = decideMask(value, role, dataType, aiLevel);
+    
     // store cached result (do not store raw value)
-    cacheSet(
-      key,
-      {
-        masked: result.masked,
-        level: result.level,
-        reason: result.reason,
-        source: result.source,
-      },
-      1000 * 60 * 60
-    );
+    const cacheValue = {
+      masked: result.masked,
+      level: result.level,
+      reason: result.reason,
+      source: result.source,
+    };
+    
+    cacheSet(key, cacheValue, 1000 * 60 * 60);
     return res.json({
       masked: result.masked,
       level: result.level,

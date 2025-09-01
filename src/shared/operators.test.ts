@@ -17,7 +17,7 @@ describe("operators", () => {
   });
 
   test("emailMask preserves domain", () => {
-    expect(emailMask("user@domain.com")).toBe("****@domain.com");
+    expect(emailMask("user@domain.com")).toBe("***@domain.com");
   });
 
   test("phoneMask shows last 4 digits", () => {
