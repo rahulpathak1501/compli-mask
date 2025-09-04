@@ -6,6 +6,8 @@ export interface DataTypeConfig {
   maskingStrategies: string[];
   defaultLevel: MaskLevel;
   validators: ((value: string) => boolean)[];
+  format?: string;
+  locale?: string;
 }
 
 export class DataTypeRegistry {

@@ -23,6 +23,7 @@ export const MaskingLevel = {
   MASK_ALL: "MASK_ALL",
   PARTIAL_LAST4: "PARTIAL_LAST4",
   PARTIAL_LAST3: "PARTIAL_LAST3",
+  CUSTOM_REGEX: "CUSTOM_REGEX", // new
 } as const;
 
 export type MaskingLevel = (typeof MaskingLevel)[keyof typeof MaskingLevel];

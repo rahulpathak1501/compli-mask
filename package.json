@@ -1,18 +1,30 @@
 {
-  "name": "react-library",
-  "private": true,
-  "version": "0.0.0",
-  "type": "commonjs",
+  "name": "react-masking-library",
+  "version": "1.0.0",
+  "description": "A flexible data masking library with AI-powered features",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rahulpathak1501/compli-mask"
+  },
+  "keywords": [
+    "data masking",
+    "privacy",
+    "typescript",
+    "react",
+    "ai"
+  ],
+  "author": "Rahul Pathak <rahul2.pathak3297@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "server": "ts-node --project tsconfig.node.json src/server/index.ts",
-    "server:dev": "nodemon --watch src/server --exec \"ts-node --project tsconfig.node.json src/server/index.ts\"",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "jest",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",

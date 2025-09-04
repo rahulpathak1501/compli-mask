@@ -2,6 +2,7 @@ import express from "express";
 import { decideMask } from "../../shared/engine";
 import { aiSuggestMaskLevel } from "../ai";
 import { makeCacheKey, cacheGet, cacheSet } from "../cache";
+import { MaskLevel } from "../../shared/types";
 
 const router = express.Router();
 
@@ -19,10 +20,12 @@ router.post("/mask", async (req, res) => {
     const cached = cacheGet(key);
     if (cached) return res.json({ ...cached, cached: true });
 
-    // try AI suggestion (best-effort)
-    const aiLevel = await aiSuggestMaskLevel(value, dataType, role);
+    const aiLevel = (await aiSuggestMaskLevel(
+      value,
+      dataType,
+      role
+    )) as MaskLevel;
     const result = decideMask(value, role, dataType, aiLevel);
-    // store cached result (do not store raw value)
     cacheSet(
       key,
       {

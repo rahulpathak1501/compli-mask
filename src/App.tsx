@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MaskedText } from "./components/MaskedText";
 import { DataElementEnum } from "./shared";
+import { aiSuggestMaskLevel } from "./server/ai";
 
 const sampleData: Partial<Record<DataElementEnum, string>> = {
   [DataElementEnum.SSN]: "123-45-6789",
@@ -17,51 +18,33 @@ const roles = [
   "Teller",
 ];
 
-// const sampleData = {
-//   SSN: "123-45-6789",
-//   ACCOUNT_NUMBER: "9876543210",
-//   PHONE: "9876543210",
-//   EMAIL: "rahul@example.com",
-// };
-
 export default function App() {
   const [userRole, setUserRole] = useState(roles[0]);
 
   return (
-    <div
-      style={{
-        maxWidth: 600,
-        margin: "auto",
-        padding: 20,
-        fontFamily: "sans-serif",
-      }}
-    >
-      <h1>Data Masking Test</h1>
-
-      <label htmlFor="roleSelect">Select User Role: </label>
-      <select
-        id="roleSelect"
-        value={userRole}
-        onChange={(e) => setUserRole(e.target.value)}
-        style={{ marginBottom: 20, padding: 8, fontSize: 16 }}
-      >
-        {roles.map((role) => (
-          <option key={role} value={role}>
-            {role}
-          </option>
+    <>
+      <h3>Data Masking Test</h3>
+      <label>
+        Select User Role:
+        <select onChange={(e) => setUserRole(e.target.value)} value={userRole}>
+          {roles.map((role) => (
+            <option key={role}>{role}</option>
+          ))}
+        </select>
+      </label>
+      <div>
+        {(Object.keys(sampleData) as DataElementEnum[]).map((key) => (
+          <div key={key}>
+            <strong>{key}:</strong>{" "}
+            <MaskedText
+              value={sampleData[key]!}
+              dataType={key}
+              role={userRole}
+              aiProvider={aiSuggestMaskLevel} // Pass AI provider here!
+            />
+          </div>
         ))}
-      </select>
-
-      {(Object.keys(sampleData) as DataElementEnum[]).map((key) => (
-        <div key={key}>
-          <strong>{key}:</strong>{" "}
-          <MaskedText
-            value={sampleData[key] ?? ""}
-            dataType={key}
-            role={userRole}
-          />
-        </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 }
